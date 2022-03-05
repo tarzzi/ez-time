@@ -12,8 +12,6 @@ h1 {
     background: linear-gradient(to right, #07f49e, #0974f1);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 50px rgb(192 219 255 / 75%),
-        0 0 32px rgb(65 120 255 / 24%);
 }
 span {
     font-family: 'DM Sans', sans-serif;
@@ -174,6 +172,7 @@ $gray: #9b9b9b;
 }
 .buttons {
     padding: 1em 0;
+    margin-bottom: 2em;
 }
 .buttons button {
     margin: 0 1em;
@@ -199,7 +198,6 @@ $gray: #9b9b9b;
     grid-auto-flow: row;
     width: 50%;
     margin: 0 auto;
-    margin-top: 2em;
 }
 .item-grid {
     display: grid;

@@ -14,7 +14,13 @@
                 <h1>Task List</h1>
             </div>
             <div class="input-task form__group field">
-                <input id="taskname" type="text" class="form__field" placeholder="Name" name="name" />
+                <input
+                    id="taskname"
+                    type="text"
+                    class="form__field"
+                    placeholder="Name"
+                    name="name"
+                />
                 <label for="taskname" class="form__label">Task name</label>
             </div>
             <div id="timer">
@@ -38,18 +44,16 @@
                 <button id="save" class="btn btn-gradient-border btn-glow">
                     Save
                 </button>
-                <button id="load" class="btn btn-gradient-border">
-                    Load
-                </button>
+                <button id="load" class="btn btn-gradient-border">Load</button>
             </div>
-
             <div class="grid">
-                <div id="items-list-header" class="item-header item-grid">
+                <div class="item-header item-grid">
                     <div class="item-name">Task</div>
                     <div class="item-duration">Duration</div>
                     <div class="item-options">Options</div>
                 </div>
             </div>
+            <div id="items-list-header" class="grid"></div>
         </div>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="timer.js" type="text/javascript"></script>

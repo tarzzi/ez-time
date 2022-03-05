@@ -13,7 +13,13 @@ $('#save').click(function () {
 $('#load').click(function () {
     loadItems();
 })
-
+$('.continue').click(function () {
+    continueTimer();
+})
+$('.delete:button').click(function () {
+    console.log("pressed");
+    deleteItem(this);
+})
 
 var x = null;
 var timer = 0;
@@ -21,8 +27,13 @@ var minutes = 0;
 var hours = 0;
 var timeNow = null;
 var taskname = "";
+var items_array = [];
 resetTimer();
 
+function deleteItem(elem){
+    console.log("delete");
+    $(elem).parent().parent().remove();
+}
 function startTimer(){
     
     console.log("start");
@@ -46,19 +57,52 @@ function startTimer(){
             }
             $('#seconds').html(timer);
         }
-    }, 200);
+    }, 50);
 }
 
 function stopTimer(){
     if($('#taskname').val() != ""){
         $('#start').prop('disabled', false);
         $('#stop').prop('disabled', true);
-        createRow();
+        
+        let taskname = $('#taskname').val()
+        let taskduration = hours+":"+minutes+":"+timer;
+        createItem(taskname, taskduration);
+
+        let tdr = parseTime();
+        createRow(taskname, tdr);
+
         $('#taskname').val("");
         resetTimer();
         clearInterval(x);
     }
 }
+
+function createItem(taskname, duration){
+    // Add task item to item array
+    let taskduration = duration;
+    let item = {
+        name: taskname,
+        duration: taskduration
+    }
+    items_array.push(item);
+    console.log("create item");
+}
+
+function createRow(taskname, duration){
+    let itemrow = $('<div>').addClass('item item-grid');
+    let itemname = $('<input>').addClass('item-name input-neutral');
+    let itemduration = $('<input>').addClass('item-duration input-neutral');
+    let options = createOptions();
+    itemname.val(taskname);
+    itemduration.val(duration);
+    itemrow.append(itemname);
+    itemrow.append(itemduration);
+    itemrow.append(options);
+    let header = $('#items-list-header');
+    header.append(itemrow);
+    console.log("create row");
+} 
 
 function resetTimer(){
     console.log("reset");
@@ -74,23 +118,6 @@ function continueTimer(){
     console.log("continue");
 }
 
-
-function createRow(){
-    $('taskname').html("");
-    console.log("create");
-    let itemrow = $('<div>').addClass('item item-grid');
-    let itemname = $('<input>').addClass('item-name input-neutral');
-    let itemduration = $('<input>').addClass('item-duration input-neutral');
-    let options = createOptions();
-    itemname.val($('#taskname').val());
-    itemduration.val(parseTime());
-    itemrow.append(itemname);
-    itemrow.append(itemduration);
-    itemrow.append(options);
-    let header = $('#items-list-header');
-    itemrow.insertAfter(header);
-} 
-
 function parseTime(){
     let time = "";
     if(hours > 0){ 
@@ -103,6 +130,7 @@ function parseTime(){
     return time;
 }
 
+
 function createOptions(){
     console.log("create options");
     let options = $('<div>').addClass('item-options');
@@ -110,6 +138,7 @@ function createOptions(){
     let deletebutton = $('<button>').addClass('delete btn-small');
     continuebutton.html("Continue");
     deletebutton.html("Delete");
+    deletebutton.attr('onclick', 'deleteItem(this)');
     options.append(continuebutton);
     options.append(deletebutton);
     return options;
@@ -117,24 +146,15 @@ function createOptions(){
 
 function saveItems(){
     // Store
-    var divs = document.getElementsByClassName("item");
-    var divs_data = [];
-    for(var i = 0; i < divs.length; i++){
-        var item = divs[i];
-        var data = item.innerHTML;
-        divs_data.push(data);
-    }
-    var divs_json = JSON.stringify(divs_data);
+
+    var divs_json = JSON.stringify(items_array);
     console.log(divs_json);
     localStorage.setItem("data", divs_json);
 
 }
 function loadItems(){
     // Retrieve
-    var divs = JSON.parse(localStorage.getItem("data"));
-    console.log(divs);
-    for(var i = 0; i < divs.length; i++){
-        var div = divs[i];
-        div.insertAfter($('#items-list-header'));
-    }
+    var div_data = JSON.parse(localStorage.getItem("data"));
+    console.log(div_data);
+    $('#items-list-header').html(div_data);
 }
