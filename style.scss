@@ -22,6 +22,20 @@ h1 {
 span {
     font-family: 'DM Sans', sans-serif;
 }
+.a {
+    font-weight: bold;
+    background: linear-gradient(to right, #f05959, #fa7592);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.b {
+    font-weight: bold;
+    background: linear-gradient(to right, #07f49e, #09f14f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
 button {
     color: #ffffff;
 }
@@ -35,12 +49,7 @@ input {
     font-family: 'DM Sans', sans-serif;
     color: #ffffff;
     background-color: #2e3031;
-}
-input {
-    font-family: 'DM Sans', sans-serif;
-    color: #ffffff;
-    background-color: #2e3031;
-    width: 220px;
+    width: 100%;
 }
 
 .hide {
@@ -50,7 +59,7 @@ input {
     transition: opacity 0.2s ease-in-out;
 }
 #items-list-container {
-    margin-bottom: 5em;
+    margin-bottom: 3em;
 }
 .item {
     transition: opacity 0.2s ease-in-out;
@@ -59,12 +68,16 @@ input {
     position: relative;
     padding: 15px 0 0;
     margin: 0 auto;
-    width: 25%;
+    width: 25% !important;
+    input {
+        width: 100%;
+        max-width: unset;
+    }
 }
 
 .form__field {
     font-family: inherit;
-    width: 100%;
+    width: 100% !important;
     border: 0;
     border-bottom: 2px solid $gray;
     outline: 0;
@@ -239,7 +252,7 @@ input {
     padding: 0.5em;
     margin-top: 5px;
 }
-.item-name{
+.item-name {
     font-size: 16px;
 }
 .input-neutral {
@@ -259,7 +272,7 @@ input {
     color: #ffffff;
 }
 .resume {
-    background-color: #008a53;
+    background-color: #00a568;
     color: #ffffff;
 }
 #timenow {
@@ -268,7 +281,17 @@ input {
 }
 @media screen and (max-width: 1024px) {
     .grid {
-        width: 80%;
+        width: 90%;
+    }
+    .form__group {
+        position: relative;
+        padding: 15px 0 0;
+        margin: 0 auto;
+        width: 60% !important;
+        input {
+            width: 100%;
+            max-width: unset;
+        }
     }
 }
 @media screen and (max-width: 750px) {
@@ -276,12 +299,26 @@ input {
         width: 100%;
         display: block;
     }
-    .date{display: none;}
+    input {
+        width: 50%;
+        max-width: unset;
+    }
     .form__group {
-        width: 60%;
+        position: relative;
+        padding: 15px 0 0;
+        margin: 0 auto;
+        width: 75% !important;
+        input {
+            width: 100%;
+            max-width: unset;
+        }
+    }
+    .date {
+        display: none;
     }
     .item-name {
         font-size: 16px;
+        padding: 0 5px;
     }
     #items-list-header {
         display: none !important;
@@ -290,5 +327,51 @@ input {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+    }
+}
+@media screen and (max-width: 425px) {
+    input {
+        width: 180px;
+        margin-left: 10px;
+    }
+    .duration {
+        padding: 0 5px;
+    }
+    .form__group {
+        position: relative;
+        padding: 15px 0 0;
+        margin: 0 auto;
+        width: 75% !important;
+        input {
+            width: 100%;
+            max-width: unset;
+        }
+    }
+    .item-grid {
+        justify-content: space-between;
+    }
+    .item-options {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .item-name {
+        background-color: #0f1011;
+        padding: 0 5px;
+    }
+    .item {
+        margin-bottom: 10px;
+        padding: 2px 0;
+        border: 2px double transparent;
+        border-left: 0;
+        border-right: 0;
+        background-image: linear-gradient(#0f1011, #0f1011),
+            radial-gradient(
+                circle at left top,
+                rgb(1, 110, 218),
+                rgb(217, 0, 192)
+            );
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
     }
 }
