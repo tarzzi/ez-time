@@ -1,8 +1,20 @@
-# ez-time
+# Timerr
+
+## For what  
 
 For your time tracking needs.  
+Simple time tracker that utilizes localstorage.
 
-![](demo.png)
+## What you can do
 
-## Todo:
-1. functionality for continuing the timer item
+- Create entrys
+- Track spent time
+- Edit name of entry
+- Resume entry time tracking  
+- Clear storage
+
+![demo image](demo.png)
+
+## Todo  
+
+1. Add dates for items  
