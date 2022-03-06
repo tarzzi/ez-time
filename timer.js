@@ -10,6 +10,12 @@ var item_id = 1;
 var delete_confirm = false;
 var continue_confirm = false;
 var today = new Date().toLocaleDateString()
+
+// Elements
+var elem__taskname = $('#taskname');
+var elem__seconds = $('#seconds');
+var elem__minutes = $('#minutes');
+var elem__hours = $('#hours');
 // Startup
 //localStorage.clear();
 resetTimer();
@@ -55,36 +61,34 @@ $('input.item-name').change(function(){
 });
 
 function startTimer(resume){
-    if($('#taskname').val() == ""){
-        $('#taskname').focus();
+    if(elem__taskname.val() == ""){
+        elem__taskname.focus();
     }
     if(!resume){
         minutes = 0;
         hours = 0;
     }
-// Update the count down every 1 second
+// Update timer every second
     x = setInterval(function () {
-
-        // Update timer every second
         timer += 1;
         if(timer < 10){
-            $('#seconds').html("0" + timer);
+            elem__seconds.html("0" + timer);
         } else {
-            $('#seconds').html(timer);
+            elem__seconds.html(timer);
             if(timer > 59){
                 timer = 0;
                 minutes += 1;
                 if(minutes < 10){
-                    $('#minutes').html("0" + minutes);
+                    elem__minutes.html("0" + minutes);
                 } else {
-                    $('#minutes').html(minutes);
+                    elem__minutes.html(minutes);
                     if(minutes > 59){
                         minutes = 0;
                         hours += 1;
                         if(hours < 10){
-                            $('#hours').html("0" + hours);
+                            elem__hours.html("0" + hours);
                         } else {
-                            $('#hours').html(hours);
+                            elem__hours.html(hours);
                         }
                     }
                 }
@@ -93,7 +97,7 @@ function startTimer(resume){
     }, 1000);
 }
 function stopTimer(){
-    if($('#taskname').val() != ""){
+    if(elem__taskname.val() != ""){
         $('#start').prop('disabled', false);
         $('#stop').prop('disabled', true);
         $('#taskname_label').text("Task name");
@@ -101,18 +105,18 @@ function stopTimer(){
             $('#items-list-header').removeClass('hide');
         }
         
-        let taskname = $('#taskname').val()
+        let taskname = elem__taskname.val()
         // create javascript object from input values, duration in seconds
         let taskduration = parseTime('toseconds');
         createItem(taskname, taskduration, today);
         // create row in items list
         createRow(taskname, taskduration, today);
-        $('#taskname').val("");
+        elem__taskname.val("");
         resetTimer();
         clearInterval(x);
     }
     else{
-        $('#taskname').focus();
+        elem__taskname.focus();
         $('#taskname_label').text("Insert task name here");
     }
 }
@@ -176,13 +180,25 @@ function createDuration(timeArray){
     return duration;
 
 }
+function createOptions(){
+    let options = $('<div>').addClass('item-options');
+    let continuebutton = $('<button>').addClass('continue btn-small');
+    let deletebutton = $('<button>').addClass('delete btn-small');
+    continuebutton.html("Continue");
+    continuebutton.attr('onclick', 'continueTimer(this)');
+    deletebutton.html("Delete");
+    deletebutton.attr('onclick', 'deleteItem(this)');
+    options.append(continuebutton);
+    options.append(deletebutton);
+    return options;
+}
 function resetTimer(){
     timer = 0;
     minutes = 0;
     hours = 0;
-    $('#seconds').html(timer);
-    $('#minutes').html(minutes);
-    $('#hours').html(hours);
+    elem__seconds.html(timer);
+    elem__minutes.html(minutes);
+    elem__hours.html(hours);
 }
 function continueTimer(elem){
     // continue timer from last item if confirmed
@@ -194,7 +210,7 @@ function continueTimer(elem){
         let item = items_array.find(item => item.id == itemid);
         let duration = item.duration;
         let name = item.name;
-        $('#taskname').val(name);
+        elem__taskname.val(name);
         setItemValuesToTimer(duration);
         deleteItem(elem, "resume");
         startTimer(true);
@@ -214,8 +230,8 @@ function continueTimer(elem){
 }
 function parseTime(option,duration){
     let time;
-
     if(option == "toseconds"){
+        // convert current timer values to seconds
         let total_seconds = 0;
         if(hours > 0){ 
             total_seconds += hours * 60 * 60;
@@ -228,58 +244,44 @@ function parseTime(option,duration){
         return time;
     } 
 
-    if(option == "toelement") {
+    if(option == "toelement" || option == "toarray") {
         //convert from seconds to hours, minutes, seconds
         let total_seconds = duration;
         let hours = Math.floor(total_seconds / 3600);
         let minutes = Math.floor((total_seconds - (hours * 3600)) / 60);
         let seconds = total_seconds - (hours * 3600) - (minutes * 60);
         time = [hours, minutes, seconds];
-        let element = createDuration(time);
-        return element;
-    }
-    if(option == "toarray"){
-        let total_seconds = duration;
-        let hours = Math.floor(total_seconds / 3600);
-        let minutes = Math.floor((total_seconds - (hours * 3600)) / 60);
-        let seconds = total_seconds - (hours * 3600) - (minutes * 60);
-        time = [hours, minutes, seconds];
-        return time;
+        if(option == "toelement"){
+            let element = createDuration(time);
+            return element;
+        }
+        if(option == "toarray"){
+            return time;
+        }
     }
 }
 function setItemValuesToTimer(duration){
-    // set hours, minutes, timer according to duration in seconds
+    // set hours, minutes & timer according to duration in seconds
     let time = parseTime('toarray', duration);
     hours = time[0];
     minutes = time[1];
     timer = time[2];
-    $('#hours').html(hours);
-    $('#minutes').html(minutes);
-    $('#seconds').html(timer);
-}
-function createOptions(){
-    let options = $('<div>').addClass('item-options');
-    let continuebutton = $('<button>').addClass('continue btn-small');
-    let deletebutton = $('<button>').addClass('delete btn-small');
-    continuebutton.html("Continue");
-    continuebutton.attr('onclick', 'continueTimer(this)');
-    deletebutton.html("Delete");
-    deletebutton.attr('onclick', 'deleteItem(this)');
-    options.append(continuebutton);
-    options.append(deletebutton);
-    return options;
+    elem__hours.html(hours);
+    elem__minutes.html(minutes);
+    elem__seconds.html(timer);
 }
 function deleteItem(elem, option){
     if((elem.classList.contains('confirm') && delete_confirm) || (option == "resume")){
         //remove item from items_array depending on id
         let id = $(elem).parent().parent().attr('id');
         item_id = 1;
+
         items_array.forEach(element => {
             if(element.id == id){
                 items_array.splice(items_array.indexOf(element), 1);
             }
             else{
-                // set id ordering again
+                // reorder item ids
                 element.id = item_id;
                 item_id += 1;
             }
@@ -325,7 +327,6 @@ function saveItems(){
     localStorage.setItem("data", jsonItems);
 
 }
-
 function loadItems(){
     if(localStorage.getItem("data") != null){
         // Retrieve
@@ -339,11 +340,7 @@ function loadItems(){
     }
 }
 function showTime() {
-
-    // return new date and time
     let dateTime= new Date();
-
-    // return the time
     let timeNow = dateTime.toLocaleTimeString();
     $('#timeNow').html(timeNow);
 }

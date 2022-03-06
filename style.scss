@@ -32,20 +32,27 @@ button:disabled {
 }
 
 input {
+    font-family: 'DM Sans', sans-serif;
     color: #ffffff;
     background-color: #2e3031;
 }
+input {
+    font-family: 'DM Sans', sans-serif;
+    color: #ffffff;
+    background-color: #2e3031;
+    width: 220px;
+}
 
-.hide{
+.hide {
     opacity: 0;
 }
-#items-list-header{
+#items-list-header {
     transition: opacity 0.2s ease-in-out;
 }
-#items-list-container{
+#items-list-container {
     margin-bottom: 5em;
 }
-.item{
+.item {
     transition: opacity 0.2s ease-in-out;
 }
 .form__group {
@@ -182,7 +189,7 @@ input {
 .input-task {
     margin-top: 1em;
 }
-.input-time{
+.input-time {
     display: inline-block;
     width: 25px;
 }
@@ -203,13 +210,15 @@ input {
     display: inline-block;
     width: 60px;
 }
-#h,#m,#s{
+#h,
+#m,
+#s {
     min-width: 50px;
 }
 .grid {
     display: grid;
     grid-auto-flow: row;
-    width: 50%;
+    width: 60%;
     margin: 0 auto;
 }
 .item-grid {
@@ -217,6 +226,7 @@ input {
     grid-auto-columns: minmax(0, 1fr);
     grid-auto-flow: column;
     align-items: center;
+    justify-items: center;
 }
 .item-header {
     background-color: #333536;
@@ -229,8 +239,11 @@ input {
     padding: 0.5em;
     margin-top: 5px;
 }
+.item-name{
+    font-size: 16px;
+}
 .input-neutral {
-    background-color: #202224; 
+    background-color: #202224;
     border: none;
     text-align: center;
     padding: 6px 0;
@@ -241,23 +254,41 @@ input {
     border: #6e6e6e 1px solid !important;
     text-align: center;
 }
-.confirm{
-    background-color: #D11A2A;
+.confirm {
+    background-color: #d11a2a;
     color: #ffffff;
 }
-.resume{
+.resume {
     background-color: #008a53;
     color: #ffffff;
 }
-#timenow{
+#timenow {
     font-size: 18px;
     font-family: 'Azeret Mono', monospace;
 }
+@media screen and (max-width: 1024px) {
+    .grid {
+        width: 80%;
+    }
+}
 @media screen and (max-width: 750px) {
     .grid {
-        width: 90%;
+        width: 100%;
+        display: block;
     }
+    .date{display: none;}
     .form__group {
         width: 60%;
+    }
+    .item-name {
+        font-size: 16px;
+    }
+    #items-list-header {
+        display: none !important;
+    }
+    .item-grid {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
 }
