@@ -4,6 +4,7 @@
 
 For your time tracking needs.  
 Simple time tracker that utilizes localstorage.
+Tracks name, start date and time spent
 
 ## What you can do
 
@@ -17,4 +18,4 @@ Simple time tracker that utilizes localstorage.
 
 ## Todo  
 
-1. Add dates for items  
+1. A lot of refactoring
