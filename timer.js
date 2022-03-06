@@ -9,7 +9,7 @@ var items_array = [];
 var item_id = 1;
 var delete_confirm = false;
 var continue_confirm = false;
-
+var today = new Date().toLocaleDateString()
 // Startup
 //localStorage.clear();
 resetTimer();
@@ -104,9 +104,9 @@ function stopTimer(){
         let taskname = $('#taskname').val()
         // create javascript object from input values, duration in seconds
         let taskduration = parseTime('toseconds');
-        createItem(taskname, taskduration);
+        createItem(taskname, taskduration, today);
         // create row in items list
-        createRow(taskname, taskduration);
+        createRow(taskname, taskduration, today);
         $('#taskname').val("");
         resetTimer();
         clearInterval(x);
@@ -116,25 +116,27 @@ function stopTimer(){
         $('#taskname_label').text("Insert task name here");
     }
 }
-function createItem(taskname, duration){
+function createItem(taskname, duration, startdate){
     // Add task item to item array
-    let taskduration = duration;
     let item = {
         id: item_id,
         name: taskname,
-        duration: taskduration
+        duration: duration,
+        date: startdate
     }
     items_array.push(item);
     saveItems();
 }
-function createRow(taskname, duration){
+function createRow(taskname, duration, startdate){
     let itemrow = $('<div>').addClass('item item-grid');
     itemrow.attr('id', item_id);
     let itemname = $('<input>').addClass('item-name input-neutral');
-    //let itemduration = $('<input>').addClass('item-duration input-neutral');
+    let date = $('<div>').addClass('date');
+    date.text(startdate);
     let options = createOptions();
     itemname.val(taskname);
     itemrow.append(itemname);
+    itemrow.append(date);
     if(parseInt(duration)){
         duration_elem = parseTime('toelement', duration);
     } 
@@ -323,15 +325,17 @@ function saveItems(){
     localStorage.setItem("data", jsonItems);
 
 }
+
 function loadItems(){
     if(localStorage.getItem("data") != null){
-
         // Retrieve
         items_array = JSON.parse(localStorage.getItem("data"));
-        items_array.forEach(element => {
-            element.id = item_id;
-            createRow(element.name, element.duration);
-        }); 
+        if(items_array.length > 0){
+            items_array.forEach(element => {
+                element.id = item_id;
+                createRow(element.name, element.duration, element.date);
+            }); 
+        }
     }
 }
 function showTime() {
@@ -344,6 +348,7 @@ function showTime() {
     $('#timeNow').html(timeNow);
 }
 let display = setInterval(showTime, 1000);
+
 function resetLocalStorage(){
     var confirm_clear = confirm("Are you sure you want to clear all entrys?");
     if(confirm_clear){
