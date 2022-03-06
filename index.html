@@ -10,7 +10,7 @@
             <div class="title">
                 <h1>Task List</h1>
             </div>
-            <div id="timeNow"></div>
+            <div id="timeNow">00.00.00</div>
             <div class="input-task form__group field">
                 <input
                     id="taskname"
@@ -19,7 +19,7 @@
                     placeholder="Name"
                     name="name"
                 />
-                <label for="taskname" class="form__label">Task name</label>
+                <label id="taskname_label" for="taskname" class="form__label">Task name</label>
             </div>
             <div id="timer">
                 <div id="h" class="time-unit"><div class="time" id="hours"></div>h
@@ -45,6 +45,9 @@
                 </div>
             </div>
             <div id="items-list-container" class="grid"></div>
+            <button id="clear" class="btn btn-gradient-border btn-small hide">
+                Clear storage
+            </button>
         </div>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="timer.js" type="text/javascript"></script>

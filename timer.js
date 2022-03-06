@@ -8,6 +8,7 @@ var taskname = "";
 var items_array = [];
 var item_id = 1;
 var delete_confirm = false;
+var continue_confirm = false;
 
 // Startup
 //localStorage.clear();
@@ -28,12 +29,20 @@ $('#save').click(function () {
 $('#load').click(function () {
     loadItems();
 })
-$('.continue').click(function () {
-    continueTimer();
+$('#clear').click(function () {
+    resetLocalStorage();
 })
 $(document).click(function(event){
-    if (event.target.closest(".confirm")) return
-    $('.confirm').removeClass('confirm');
+    if (event.target.closest(".confirm")){
+        $('.resume').removeClass('resume');
+        return
+    }
+    if( event.target.closest(".resume")){
+        $('.confirm').removeClass('confirm'); 
+        return
+    }
+    $('.confirm').removeClass('confirm'); 
+    $('.resume').removeClass('resume');
   })
 
 $('input.item-name').change(function(){
@@ -45,9 +54,14 @@ $('input.item-name').change(function(){
     saveItems();
 });
 
-function startTimer(){
-    minutes = 0;
-    hours = 0;
+function startTimer(resume){
+    if($('#taskname').val() == ""){
+        $('#taskname').focus();
+    }
+    if(!resume){
+        minutes = 0;
+        hours = 0;
+    }
 // Update the count down every 1 second
     x = setInterval(function () {
 
@@ -76,32 +90,32 @@ function startTimer(){
                 }
             }
         } 
-    }, 50);
+    }, 1000);
 }
-
 function stopTimer(){
     if($('#taskname').val() != ""){
         $('#start').prop('disabled', false);
         $('#stop').prop('disabled', true);
+        $('#taskname_label').text("Task name");
         if($('#items-list-header').hasClass('hide')){
             $('#items-list-header').removeClass('hide');
         }
         
         let taskname = $('#taskname').val()
         // create javascript object from input values, duration in seconds
-        console.log("stop timer");
         let taskduration = parseTime('toseconds');
         createItem(taskname, taskduration);
         // create row in items list
         createRow(taskname, taskduration);
-        console.log('created row');
-
         $('#taskname').val("");
         resetTimer();
         clearInterval(x);
     }
+    else{
+        $('#taskname').focus();
+        $('#taskname_label').text("Insert task name here");
+    }
 }
-
 function createItem(taskname, duration){
     // Add task item to item array
     let taskduration = duration;
@@ -113,7 +127,6 @@ function createItem(taskname, duration){
     items_array.push(item);
     saveItems();
 }
-
 function createRow(taskname, duration){
     let itemrow = $('<div>').addClass('item item-grid');
     itemrow.attr('id', item_id);
@@ -123,7 +136,6 @@ function createRow(taskname, duration){
     itemname.val(taskname);
     itemrow.append(itemname);
     if(parseInt(duration)){
-        console.log("is int");
         duration_elem = parseTime('toelement', duration);
     } 
     itemrow.append(duration_elem);
@@ -162,7 +174,6 @@ function createDuration(timeArray){
     return duration;
 
 }
-
 function resetTimer(){
     timer = 0;
     minutes = 0;
@@ -171,25 +182,34 @@ function resetTimer(){
     $('#minutes').html(minutes);
     $('#hours').html(hours);
 }
-
 function continueTimer(elem){
-    $('#start').prop('disabled', true);
-    $('#stop').prop('disabled', false);
-    //resume timer from saved time, using element prop id and items_array
-    let itemid = $(elem).parent().parent().attr('id');
-    let item = items_array.find(item => item.id == itemid);
-    let duration = item.duration;
-    console.log(duration);
-    let name = item.name;
-    $('#taskname').val(name);
-    setValuesToItem(duration);
-    $(elem).parent().parent().remove();
-    // TODO remember to remove from items_array also, on save and on load forgets
-
-    startTimer();
-
+    // continue timer from last item if confirmed
+    if(elem.classList.contains('resume') && continue_confirm){
+        $('#start').prop('disabled', true);
+        $('#stop').prop('disabled', false);
+        //resume timer from saved time, using element prop id and items_array
+        let itemid = $(elem).parent().parent().attr('id');
+        let item = items_array.find(item => item.id == itemid);
+        let duration = item.duration;
+        let name = item.name;
+        $('#taskname').val(name);
+        setItemValuesToTimer(duration);
+        deleteItem(elem, "resume");
+        startTimer(true);
+    }
+    // set current element to continue_confirm
+     else if(continue_confirm && elem.classList.contains('resume') == false){
+        $('.resume').removeClass('resume');
+        $(elem).addClass('resume');
+        continue_confirm = false;
+    } 
+    // enable continue on current element
+    else if(!continue_confirm){
+        $('.continue').removeClass('resume');
+        $(elem).addClass('resume');
+        continue_confirm = true;
+    }
 }
-
 function parseTime(option,duration){
     let time;
 
@@ -225,7 +245,7 @@ function parseTime(option,duration){
         return time;
     }
 }
-function setValuesToItem(duration){
+function setItemValuesToTimer(duration){
     // set hours, minutes, timer according to duration in seconds
     let time = parseTime('toarray', duration);
     hours = time[0];
@@ -234,11 +254,7 @@ function setValuesToItem(duration){
     $('#hours').html(hours);
     $('#minutes').html(minutes);
     $('#seconds').html(timer);
-
-
-
 }
-
 function createOptions(){
     let options = $('<div>').addClass('item-options');
     let continuebutton = $('<button>').addClass('continue btn-small');
@@ -251,9 +267,8 @@ function createOptions(){
     options.append(deletebutton);
     return options;
 }
-
-function deleteItem(elem){
-    if(elem.classList.contains('confirm') && delete_confirm == true){
+function deleteItem(elem, option){
+    if((elem.classList.contains('confirm') && delete_confirm) || (option == "resume")){
         //remove item from items_array depending on id
         let id = $(elem).parent().parent().attr('id');
         item_id = 1;
@@ -277,28 +292,28 @@ function deleteItem(elem){
             div_id -= 1;
         });
         delete_confirm = false;
+        continue_confirm = false;
         $('.confirm').removeClass('confirm');
+        $('.resume').removeClass('resume');
     }
-    else if(delete_confirm == false){
+    else if(!delete_confirm ){
         $('.confirm').removeClass('confirm');
         $(elem).addClass('confirm');
         delete_confirm = true;
     }
-    else if(delete_confirm == true && elem.classList.contains('confirm') == false){
+    else if(delete_confirm && elem.classList.contains('confirm') == false) {
         $('.confirm').removeClass('confirm');
         $(elem).addClass('confirm');
         delete_confirm = false;
     }
 
 }
-
 function saveItems(){
     // Store
-    // loop the items_array and format the id:s of items
-    
     if(items_array.length < 1){
         $('#items-list-header').addClass('hide');
     }
+    // loop the items_array and rearrange the id:s of items
     let id = 1;
     items_array.forEach(element => {
         element.id = id;
@@ -310,6 +325,7 @@ function saveItems(){
 }
 function loadItems(){
     if(localStorage.getItem("data") != null){
+
         // Retrieve
         items_array = JSON.parse(localStorage.getItem("data"));
         items_array.forEach(element => {
@@ -318,7 +334,6 @@ function loadItems(){
         }); 
     }
 }
-
 function showTime() {
 
     // return new date and time
@@ -328,5 +343,11 @@ function showTime() {
     let timeNow = dateTime.toLocaleTimeString();
     $('#timeNow').html(timeNow);
 }
-
 let display = setInterval(showTime, 1000);
+function resetLocalStorage(){
+    var confirm_clear = confirm("Are you sure you want to clear all entrys?");
+    if(confirm_clear){
+        localStorage.clear();
+        location.reload();
+    }
+}
