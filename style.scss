@@ -1,4 +1,9 @@
-$bg-color : #0f1011;
+$bg-color: #0f1011;
+$primary: #11998e;
+$secondary: #38ef7d;
+$white: #fff;
+$gray: #9b9b9b;
+
 body {
     margin: 0;
     padding: 0;
@@ -12,36 +17,45 @@ h1 {
     background: linear-gradient(to right, #07f49e, #0974f1);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    margin-bottom: 0;
 }
 span {
     font-family: 'DM Sans', sans-serif;
 }
-button{
-  color: #ffffff;
+button {
+    color: #ffffff;
 }
-button:disabled{
+button:disabled {
     background-color: #1d1e22;
     color: rgb(88, 88, 88);
     font-size: 18px;
 }
-input{
-  color: #ffffff;
-  background-color: #2e3031;
+
+input {
+    color: #ffffff;
+    background-color: #2e3031;
 }
 
-$primary: #11998e;
-$secondary: #38ef7d;
-$white: #fff;
-$gray: #9b9b9b;
+.hide{
+    opacity: 0;
+}
+#items-list-header{
+    transition: opacity 0.2s ease-in-out;
+}
+#items-list-container{
+    margin-bottom: 5em;
+}
+.item{
+    transition: opacity 0.2s ease-in-out;
+}
 .form__group {
     position: relative;
     padding: 15px 0 0;
     margin: 0 auto;
     width: 25%;
-    
-  }
-  
-  .form__field {
+}
+
+.form__field {
     font-family: inherit;
     width: 100%;
     border: 0;
@@ -52,52 +66,54 @@ $gray: #9b9b9b;
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
-  
+
     &::placeholder {
-      color: transparent;
+        color: transparent;
     }
-  
+
     &:placeholder-shown ~ .form__label {
-      font-size: 1.3rem;
-      cursor: text;
-      top: 20px;
+        font-size: 1.3rem;
+        cursor: text;
+        top: 20px;
     }
-  }
-  
-  .form__label {
+}
+
+.form__label {
     position: absolute;
     top: 0;
     display: block;
     transition: 0.2s;
     font-size: 1rem;
     color: $gray;
-  }
-  
-  .form__field:focus {
+}
+
+.form__field:focus {
     ~ .form__label {
-      position: absolute;
-      top: 0;
-      display: block;
-      transition: 0.2s;
-      font-size: 1rem;
-      color: $primary;
-      font-weight:700;    
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: $primary;
+        font-weight: 700;
     }
-    padding-bottom: 6px;  
+    padding-bottom: 6px;
     font-weight: 700;
     border-width: 3px;
-    border-image: linear-gradient(to right, $primary,$secondary);
+    border-image: linear-gradient(to right, $primary, $secondary);
     border-image-slice: 1;
-  }
-  /* reset input */
-  .form__field{
-    &:required,&:invalid { box-shadow:none; }
-  }
+}
+/* reset input */
+.form__field {
+    &:required,
+    &:invalid {
+        box-shadow: none;
+    }
+}
 .glow {
     padding: 2rem 0;
     color: white;
-    text-shadow: 0 0 80px rgb(192 219 255 / 75%),
-        0 0 32px rgb(65 120 255 / 24%);
+    text-shadow: 0 0 80px rgb(192 219 255 / 75%), 0 0 32px rgb(65 120 255 / 24%);
 }
 .btn {
     font-family: 'DM Sans', sans-serif;
@@ -109,7 +125,7 @@ $gray: #9b9b9b;
     transition: all 0.3s ease;
     border-radius: 50px;
 }
-.btn-small{
+.btn-small {
     font-family: 'DM Sans', sans-serif;
     background-color: #333536;
     margin-right: 5px;
@@ -133,29 +149,15 @@ $gray: #9b9b9b;
 
 .btn-gradient-border {
     border: 2px double transparent;
-    background-image: linear-gradient(
-            rgb(13, 14, 33),
-            rgb(13, 14, 33)
-        ),
-        radial-gradient(
-            circle at left top,
-            rgb(1, 110, 218),
-            rgb(217, 0, 192)
-        );
+    background-image: linear-gradient(rgb(13, 14, 33), rgb(13, 14, 33)),
+        radial-gradient(circle at left top, rgb(1, 110, 218), rgb(217, 0, 192));
     background-origin: border-box;
     background-clip: padding-box, border-box;
 }
 .btn-gradient-border:active {
     border: 2px double transparent;
-    background-image: linear-gradient(
-            rgb(13, 14, 33),
-            rgb(13, 14, 33)
-        ),
-        radial-gradient(
-            circle at right top,
-            rgb(0, 217, 11),
-            rgb(1, 110, 218)
-        );
+    background-image: linear-gradient(rgb(13, 14, 33), rgb(13, 14, 33)),
+        radial-gradient(circle at right top, rgb(0, 217, 11), rgb(1, 110, 218));
     background-origin: border-box;
     background-clip: padding-box, border-box;
 }
@@ -180,18 +182,29 @@ $gray: #9b9b9b;
 .input-task {
     margin-top: 1em;
 }
+.input-time{
+    display: inline-block;
+    width: 25px;
+}
 #timer {
     font-size: 30px;
-    font-family: 'Azeret Mono', monospace;
+    font-family: 'Roboto Mono', monospace;
     margin-top: 20px;
 }
 .time {
+    display: inline;
     margin-right: 2px;
     margin-left: 5px;
     width: 20px;
+    text-align: right;
 }
 .time-unit {
+    font-family: 'Azeret Mono', monospace;
     display: inline-block;
+    width: 60px;
+}
+#h,#m,#s{
+    min-width: 50px;
 }
 .grid {
     display: grid;
@@ -216,24 +229,31 @@ $gray: #9b9b9b;
     padding: 0.5em;
     margin-top: 5px;
 }
-.input-neutral{
-    background-color: #202224;
+.input-neutral {
+    background-color: #202224; 
     border: none;
     text-align: center;
     padding: 6px 0;
 }
-.input-neutral:focus{
+.input-neutral:focus {
     outline: #6e6e6e;
     background-color: #202224;
     border: #6e6e6e 1px solid !important;
     text-align: center;
 }
+.confirm{
+    background-color: #D11A2A;
+    color: #ffffff;
+}
+#timenow{
+    font-size: 18px;
+    font-family: 'Azeret Mono', monospace;
+}
 @media screen and (max-width: 750px) {
     .grid {
         width: 90%;
     }
-    .form__group{
+    .form__group {
         width: 60%;
     }
 }
-    

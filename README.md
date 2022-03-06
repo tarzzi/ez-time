@@ -5,4 +5,4 @@ For your time tracking needs.
 ![](demo.png)
 
 ## Todo:
-1. Localstorage usage
+1. functionality for continuing the timer item
