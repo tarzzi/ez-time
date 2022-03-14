@@ -68,33 +68,32 @@ function startTimer(resume){
         minutes = 0;
         hours = 0;
     }
+    timer = 0;
 // Update timer every second
     x = setInterval(function () {
-        timer += 1;
-        if(timer < 10){
+        
+        if(timer > 59){
+            timer = 0;
             elem__seconds.html("0" + timer);
-        } else {
+            minutes += 1;
+        }
+        // if seconds is between 10 and 59 
+        else {
             elem__seconds.html(timer);
-            if(timer > 59){
-                timer = 0;
-                minutes += 1;
-                if(minutes < 10){
-                    elem__minutes.html("0" + minutes);
-                } else {
-                    elem__minutes.html(minutes);
-                    if(minutes > 59){
-                        minutes = 0;
-                        hours += 1;
-                        if(hours < 10){
-                            elem__hours.html("0" + hours);
-                        } else {
-                            elem__hours.html(hours);
-                        }
-                    }
-                }
-            }
-        } 
-    }, 1000);
+        }
+        
+        if(minutes > 59){
+            minutes = 0;
+            elem__minutes.html("0" + minutes);
+            hours += 1;
+        }
+         else {
+            elem__minutes.html(minutes);
+        }
+        
+        elem__hours.html(hours);
+        timer += 1;
+    }, 100);
 }
 function stopTimer(){
     if(elem__taskname.val() != ""){
