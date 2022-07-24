@@ -67,11 +67,12 @@ function startTimer(resume){
     if(!resume){
         minutes = 0;
         hours = 0;
+        timer = 0;
     }
-    timer = 0;
 // Update timer every second
     x = setInterval(function () {
         
+        timer += 1;
         if(timer > 59){
             timer = 0;
             elem__seconds.html("0" + timer);
@@ -92,8 +93,7 @@ function startTimer(resume){
         }
         
         elem__hours.html(hours);
-        timer += 1;
-    }, 100);
+    }, 1000);
 }
 function stopTimer(){
     if(elem__taskname.val() != ""){
@@ -138,13 +138,11 @@ function createRow(taskname, duration, startdate){
     date.text(startdate);
     let options = createOptions();
     itemname.val(taskname);
-    itemrow.append(itemname);
-    itemrow.append(date);
+    itemrow.append(itemname).append(date);
     if(parseInt(duration)){
         duration_elem = parseTime('toelement', duration);
     } 
-    itemrow.append(duration_elem);
-    itemrow.append(options);
+    itemrow.append(duration_elem).append(options);
     let items_list_container = $('#items-list-container');
     
     item_id += 1;
