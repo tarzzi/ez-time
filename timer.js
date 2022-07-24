@@ -11,7 +11,7 @@ var delete_confirm = false;
 var continue_confirm = false;
 var today = new Date().toLocaleDateString()
 
-// Elements
+// Elements 
 var elem__taskname = $('#taskname');
 var elem__seconds = $('#seconds');
 var elem__minutes = $('#minutes');
