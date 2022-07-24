@@ -15,7 +15,3 @@ Tracks name, start date and time spent
 - Clear storage
 
 ![demo image](demo.png)
-
-## Todo  
-
-1. A lot of refactoring
